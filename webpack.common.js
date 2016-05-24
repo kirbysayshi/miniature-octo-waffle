@@ -3,6 +3,9 @@ var path = require('path');
 var plugins = [];
 
 module.exports = {
+
+  devtool: 'inline-source-map',
+
   entry: {
     client: [
       __dirname + '/src/index.js'
