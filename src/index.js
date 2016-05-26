@@ -101,16 +101,7 @@ const INITIAL_STATE = {
   }
 }
 
-let store = createStore(menuReducer, INITIAL_STATE/*, function (reducer) {
-  return function (state, action) {
-    let incoming = state;
-    let outgoing = reducer(state, action);
-    if (incoming !== outgoing) {
-      linkify(outgoing.menu);
-    }
-    return outgoing;
-  }
-}*/);
+let store = createStore(combineReducers({ menu: menuReducer }), INITIAL_STATE);
 
 store.subscribe(() => {
   const state = store.getState();

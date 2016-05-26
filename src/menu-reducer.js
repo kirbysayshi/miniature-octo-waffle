@@ -4,7 +4,14 @@ import {
   MENU_ITEM_LEAVE
 } from './menu-actions';
 
-export default function reducer (state, action) {
+export const INITIAL_STATE = {
+  highlighted: [],
+  checked: [],
+  id: null,
+  items: []
+};
+
+export default function reducer (state = INITIAL_STATE, action) {
   switch(action.type) {
 
     case MENU_SELECT: {
@@ -23,38 +30,33 @@ export default function reducer (state, action) {
         child = child.parent;
       }
 
-      return {
+      return linkify({
         ...state,
-        menu: linkify({
-          ...state.menu,
-          highlighted: ids,
-        })
-      }
+        highlighted: ids,
+      })
     }
 
     /*case MENU_ITEM_LEAVE: {
 
-      const last = state.menu.highlighted[state.menu.highlighted.length - 1];
+      const last = state.highlighted[state.highlighted.length - 1];
 
       console.log('last', last);
 
-      return {
+      return linkify({
         ...state,
-        menu: linkify({
-          ...state.menu,
-          highlighted: last === action.item.id
-            ? state.menu.highlighted.slice(-1)
-            : state.menu.highlighted,
-        })
-      }
+        highlighted: last === action.item.id
+          ? state.highlighted.slice(-1)
+          : state.highlighted,
+      })
     }*/
 
     default:
-      linkify(state.menu);
+      linkify(state);
       return state;
   }
 }
 
+// TODO: this should be in the initial generation, right?
 // Add parent references to every child, in place
 function linkify (parent) {
   if (!parent.items) return parent;
