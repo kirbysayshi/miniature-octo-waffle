@@ -42,6 +42,7 @@ const INITIAL_STATE = {
       {
         id: 'item-' + (++itemIndex),
         name: 'Edit',
+        items: [],
       },
 
       {

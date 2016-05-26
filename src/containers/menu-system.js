@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 
-import Menus from '../components/menus';
+import MenuBar from '../components/menu-bar';
 
 import {
-  createMenuItemEnter,
-  createMenuItemLeave,
+  createMenuSelect
 } from '../menu-actions';
 
 const MenuSystem = connect(
@@ -18,11 +17,10 @@ const MenuSystem = connect(
 
   function dispatches (dispatch) {
     return {
-      onMouseEnterPane: (item) => dispatch(createMenuItemEnter(item)),
-      onMouseLeavePane: (item) => dispatch(createMenuItemLeave(item)),
+      onClick: (item) => dispatch(createMenuSelect(item))
     }
   }
 
-)(Menus);
+)(MenuBar);
 
 export default MenuSystem;

@@ -1,8 +1,8 @@
 export const MENU_SELECT = 'MENU_SELECT';
-export function createOpenMenu (id) {
+export function createMenuSelect (item) {
   return {
     type: MENU_SELECT,
-    menuId: id
+    item
   }
 }
 
@@ -10,7 +10,7 @@ export const MENU_ITEM_ENTER = 'MENU_ITEM_ENTER';
 export function createMenuItemEnter (item) {
   return {
     type: MENU_ITEM_ENTER,
-    item: item
+    item
   }
 }
 
@@ -18,6 +18,6 @@ export const MENU_ITEM_LEAVE = 'MENU_ITEM_LEAVE';
 export function createMenuItemLeave (item) {
   return {
     type: MENU_ITEM_LEAVE,
-    item: item
+    item
   }
 }

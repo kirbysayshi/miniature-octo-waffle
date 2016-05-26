@@ -15,9 +15,18 @@ export default function reducer (state = INITIAL_STATE, action) {
   switch(action.type) {
 
     case MENU_SELECT: {
-      const selectedPath = pathTo(state.menu, i => i.highlighted === true);
-      const nextMenu = state.menu.items.find(m => m.id === action.id);
-      return state;
+      const { highlighted } = state;
+      return {
+        ...state,
+        highlighted: highlighted[1] === action.item.id
+
+          // close, clicked the same menu again
+          ? []
+
+          // TODO: probably need to make this recursive
+          // menu is opened, ensure root and current top-level item is there
+          : [state.id, action.item.id] // open other menu
+      }
     }
 
     case MENU_ITEM_ENTER: {
