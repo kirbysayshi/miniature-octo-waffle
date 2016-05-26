@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import menuReducer from './menu-reducer';
-import MenuSystem from './components/menu-system';
+import MenuSystem from './containers/menu-system';
 
 let itemIndex = 0;
 
@@ -113,7 +113,12 @@ function render () {
   const rootElement = document.getElementById('root');
   const state = store.getState();
   //console.log(state);
-  ReactDOM.render(<MenuSystem menu={state.menu} dispatch={store.dispatch} />, rootElement);
+  ReactDOM.render(
+    <Provider store={store}>
+      <MenuSystem />
+    </Provider>,
+    rootElement
+  );
 }
 
 render();

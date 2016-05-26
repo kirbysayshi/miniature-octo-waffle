@@ -1,15 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
-import {
-  createMenuItemEnter,
-  createMenuItemLeave
-} from '../menu-actions';
-
-export default class MenuSystem extends Component {
+class Menus extends Component {
 
   recursiveRender (items, highlighted, checked) {
-    const { dispatch } = this.props;
 
     const listStyle = {
       position: 'absolute',
@@ -35,8 +29,8 @@ export default class MenuSystem extends Component {
               className={classes}
               style={itemStyle}
               onClick={e => { e.stopPropagation(); console.log(item.name) }}
-              onMouseEnter={e => dispatch(createMenuItemEnter(item))}
-              onMouseLeave={e => dispatch(createMenuItemLeave(item))}
+              onMouseEnter={e => this.props.onMouseEnterPane(item)}
+              onMouseLeave={e => this.props.onMouseLeavePane(item)}
               data-item-id={item.id}
               key={item.id}
             >
@@ -59,7 +53,7 @@ export default class MenuSystem extends Component {
   render () {
     const {
       items, highlighted, checked
-    } = this.props.menu;
+    } = this.props;
 
     const style = {
       position: 'relative',
@@ -73,3 +67,14 @@ export default class MenuSystem extends Component {
     );
   }
 }
+
+Menus.propTypes = {
+  items: PropTypes.array.isRequired,
+  highlighted: PropTypes.array.isRequired,
+  checked: PropTypes.array.isRequired,
+
+  onMouseEnterPane: PropTypes.func.isRequired,
+  onMouseLeavePane: PropTypes.func.isRequired
+}
+
+export default Menus;
