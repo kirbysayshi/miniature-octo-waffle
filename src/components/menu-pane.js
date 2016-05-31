@@ -11,8 +11,15 @@ export default class MenuPane extends Component {
       checked,
     } = this.props;
 
+    const paneStyle = {
+      position: 'absolute',
+      left: '100%',
+      listStyleType: 'none',
+      paddingLeft: 0,
+    }
+
     return (
-      <ul>
+      <ul style={paneStyle}>
         {item.items.map(child => {
 
           const isHighlighted = highlighted.indexOf(child.id) > -1;

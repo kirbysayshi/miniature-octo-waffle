@@ -23,6 +23,7 @@ class Menus extends Component {
             <div style={{
               position: 'relative',
               float: 'left',
+              minWidth: '5vw',
             }}
             onClick={e => onClick(child)}
             key={child.id}
