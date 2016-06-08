@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import MenuBar from '../components/menu-bar';
 
 import {
-  createMenuSelect
+  createMenuSelect,
 } from '../menu-actions';
 
 const MenuSystem = connect(
@@ -17,7 +17,7 @@ const MenuSystem = connect(
 
   function dispatches (dispatch) {
     return {
-      onClick: (item) => dispatch(createMenuSelect(item))
+      onClick: (item, rect) => dispatch(createMenuSelect(item, rect)),
     }
   }
 

@@ -1,49 +1,58 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-import MenuPane from './menu-pane';
+import MenuItem from '../containers/menu-item';
+import MenuPane from '../containers/menu-pane';
 
-class Menus extends Component {
+const barStyle = {
+  position: 'relative',
+};
 
-  render () {
-    const {
-      items, highlighted, checked, onClick
-    } = this.props;
-
-    const style = {
-      position: 'relative',
-    };
-
-    // TODO: throw some flex box in here
-
-    return (
-      <div style={style}>
-        {items.map(child => {
-          const isHighlighted = highlighted.indexOf(child.id) > -1;
-          return (
-            <div style={{
-              position: 'relative',
-              float: 'left',
-              minWidth: '5vw',
-            }}
-            onClick={e => onClick(child)}
-            key={child.id}
-            >
-            {child.name}
-            {isHighlighted && <MenuPane item={child} highlighted={highlighted.slice(1)} checked={checked} />}
-            </div>
-          )
-        })}
-      </div>
-    );
-  }
+const barItemStyle = {
+  position: 'relative',
+  float: 'left',
+  minWidth: '5vw',
 }
 
-Menus.propTypes = {
+const MenuBar = ({
+  items,
+  panes,
+  layouts,
+  onClick,
+}) => {
+
+  return (
+    <div style={barStyle}>
+      {items.map(item => {
+        return (
+          <div
+            key={item.id}
+            style={barItemStyle}
+            onClick={e => onClick(item, e.target.getBoundingClientRect())}
+          >
+          {item.name}
+          </div>
+        )
+      })}
+
+      {panes.map((pane, idx) => {
+        // AKA parents
+        return <MenuPane
+          key={idx}
+          items={pane.items}
+          layout={layouts[idx]}
+        />
+      })}
+
+    </div>
+  );
+}
+
+MenuBar.propTypes = {
   items: PropTypes.array.isRequired,
-  highlighted: PropTypes.array.isRequired,
-  checked: PropTypes.array.isRequired,
+  panes: PropTypes.array.isRequired,
+  layouts: PropTypes.array.isRequired,
 
   onClick: PropTypes.func.isRequired,
 }
 
-export default Menus;
+export default MenuBar;

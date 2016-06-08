@@ -5,14 +5,12 @@ const MenuItem = ({
   item,
   isHighlighted,
   isChecked,
-  onShouldRenderSubMenu,
+  onClick,
   onMouseEnter,
   onMouseLeave,
 }) => {
 
-  const itemStyle = {
-    position: 'relative',
-  }
+  const itemStyle = {};
 
   const classes = cx({ highlighted: isHighlighted });
 
@@ -20,9 +18,9 @@ const MenuItem = ({
     <li
       className={classes}
       style={itemStyle}
-      onClick={e => { e.stopPropagation(); console.log(item.name) }}
-      onMouseEnter={e => onMouseEnter(item)}
-      onMouseLeave={e => onMouseLeave(item)}
+      onClick={e => onClick(item)}
+      onMouseEnter={e => onMouseEnter(item, e.currentTarget.getBoundingClientRect())}
+      onMouseLeave={e => onMouseLeave(item, e.currentTarget.getBoundingClientRect())}
       data-item-id={item.id}
       key={item.id}
     >
@@ -30,7 +28,6 @@ const MenuItem = ({
       {item.checkable && <input type='checkbox' checked={isChecked} />}
       </span>
       {item.name} {item.items && <span>&#10097;</span>}
-      {item.items && isHighlighted && onShouldRenderSubMenu()}
     </li>
   );
 }
@@ -39,7 +36,7 @@ MenuItem.propTypes = {
   item: PropTypes.object.isRequired,
   isHighlighted: PropTypes.bool.isRequired,
   isChecked: PropTypes.bool.isRequired,
-  onShouldRenderSubMenu: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func.isRequired,
   onMouseLeave: PropTypes.func.isRequired,
 }

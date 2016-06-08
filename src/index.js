@@ -6,17 +6,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import menuReducer from './menu-reducer';
-import MenuSystem from './containers/menu-system';
+import menuReducer, { linkify } from './menu-reducer';
+import MenuBar from './containers/menu-bar';
+import { createSetRenderSize } from './actions';
 
 let itemIndex = 0;
 
 const INITIAL_STATE = {
 
   menu: {
+
+    renderWidth: window.innerWidth,
+    renderHeight: window.innerHeight,
+    rects: {},
+    layouts: [],
+    panes: [],
     highlighted: [],
     checked: [],
-    id: 'item-' + (++itemIndex),
     items: [
       {
         id: 'item-' + (++itemIndex),
@@ -93,7 +99,37 @@ const INITIAL_STATE = {
                 id: 'item-' + (++itemIndex),
                 name: 'Western',
                 checkable: true,
-              }
+              },
+
+              {
+                id: 'item-' + (++itemIndex),
+                name: 'Auto-Detect 2',
+                items: [
+                  {
+                    id: 'item-' + (++itemIndex),
+                    name: '(Off) 2',
+                    checkable: true,
+                  },
+
+                  {
+                    id: 'item-' + (++itemIndex),
+                    name: 'Russian 2',
+                    checkable: true,
+                  },
+
+                  {
+                    id: 'item-' + (++itemIndex),
+                    name: 'Japanese 2',
+                    checkable: true,
+                  },
+
+                  {
+                    id: 'item-' + (++itemIndex),
+                    name: 'Ukrainian 2',
+                    checkable: true,
+                  }
+                ]
+              },
             ]
           }
         ]
@@ -102,7 +138,13 @@ const INITIAL_STATE = {
   }
 }
 
+INITIAL_STATE.menu.items.forEach(linkify);
+
 let store = createStore(combineReducers({ menu: menuReducer }), INITIAL_STATE);
+
+window.addEventListener('resize', () => {
+  store.dispatch(createSetRenderSize(window.innerWidth, window.innerHeight));
+});
 
 store.subscribe(() => {
   const state = store.getState();
@@ -116,11 +158,13 @@ function render () {
   //console.log(state);
   ReactDOM.render(
     <Provider store={store}>
-      <MenuSystem />
+      <MenuBar />
     </Provider>,
     rootElement
   );
 }
 
 render();
+
+
 
