@@ -7,8 +7,9 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import menuReducer, { linkify } from './menu-reducer';
-import MenuBar from './containers/menu-bar';
 import { createSetRenderSize } from './actions';
+
+import Menus from './containers/menus';
 
 let itemIndex = 0;
 
@@ -18,7 +19,6 @@ const INITIAL_STATE = {
 
     renderWidth: window.innerWidth,
     renderHeight: window.innerHeight,
-    rects: {},
     layouts: [],
     panes: [],
     highlighted: [],
@@ -148,17 +148,15 @@ window.addEventListener('resize', () => {
 
 store.subscribe(() => {
   const state = store.getState();
-  //console.log(state);
   render();
 });
 
 function render () {
   const rootElement = document.getElementById('root');
   const state = store.getState();
-  //console.log(state);
   ReactDOM.render(
     <Provider store={store}>
-      <MenuBar />
+      <Menus />
     </Provider>,
     rootElement
   );

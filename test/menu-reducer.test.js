@@ -7,7 +7,6 @@ const state = {
 
   renderWidth: 1000,
   renderHeight: 800,
-  rects: {},
   layouts: [],
   panes: [],
   highlighted: [],
@@ -52,25 +51,59 @@ test('MENU_ITEM_ENTER', t => {
   next = reducer(next, {
     type: 'MENU_ITEM_ENTER',
     item: state.items[0],
-    rect: { width: 100, top: 0, left: 10 },
+  });
+
+  next = reducer(next, {
+    type: 'MENU_PANES_MEASURED',
+    panes: next.panes,
+    measures: [
+      { width: 100, top: 0, left: 10, height: 10 },
+    ]
   });
 
   next = reducer(next, {
     type: 'MENU_ITEM_ENTER',
     item: state.items[0].items[0],
-    rect: { width: 100, top: 0 },
+  });
+
+  next = reducer(next, {
+    type: 'MENU_PANES_MEASURED',
+    panes: next.panes,
+    measures: [
+      { width: 100, top: 0, left: 10, height: 10 },
+      { width: 100, top: 0 }
+    ]
   });
 
   next = reducer(next, {
     type: 'MENU_ITEM_ENTER',
     item: state.items[0].items[0].items[0],
-    rect: { width: 100, top: 0 },
+  });
+
+  next = reducer(next, {
+    type: 'MENU_PANES_MEASURED',
+    panes: next.panes,
+    measures: [
+      { width: 100, top: 0, left: 10, height: 10 },
+      { width: 100, top: 0 },
+      { width: 100, top: 0 },
+    ]
   });
 
   next = reducer(next, {
     type: 'MENU_ITEM_ENTER',
     item: state.items[0].items[0].items[0].items[0],
-    rect: { width: 100, top: 0 },
+  });
+
+  next = reducer(next, {
+    type: 'MENU_PANES_MEASURED',
+    panes: next.panes,
+    measures: [
+      { width: 100, top: 0, left: 10, height: 10 },
+      { width: 100, top: 0 },
+      { width: 100, top: 0 },
+      { width: 100, top: 0 },
+    ]
   });
 
   t.deepEqual(next.highlighted, [
@@ -87,9 +120,9 @@ test('MENU_ITEM_ENTER', t => {
   ], 'parent panes are listed');
 
   t.deepEqual(next.layouts, [
-    { id: state.items[0].id, left: 10, top: 0, },
-    { id: state.items[0].items[0].id, left: 110, top: 0, },
-    { id: state.items[0].items[0].items[0].id, left: 210, top: 0, },
+    { id: state.items[0].id, left: 10, top: 10, },
+    { id: state.items[0].items[0].id, left: 110, top: 10, },
+    { id: state.items[0].items[0].items[0].id, left: 210, top: 10, },
   ], 'layouts tell parents where to render children');
 
   t.end();
