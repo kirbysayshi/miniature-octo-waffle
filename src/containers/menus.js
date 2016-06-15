@@ -21,8 +21,18 @@ class Menus extends Component {
     this.paneNodesToMeasure = [];
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  maybeEnqueueUnmeasured (item, node) {
+    const { highlighted, layouts } = this.props;
+    const isHighlighted = highlighted.indexOf(item.id) > -1;
+    const hasLayout = layouts.find(l => l.id === item.id);
+    const hasChildren = item.items && item.items.length > 0;
 
+    if (node && isHighlighted && !hasLayout && hasChildren) {
+      this.paneNodesToMeasure.push(node);
+    }
+  }
+
+  componentDidUpdate (prevProps, prevState) {
     const { onPanesMeasured, panes } = this.props;
 
     if (this.paneNodesToMeasure.length) {
@@ -47,15 +57,7 @@ class Menus extends Component {
         onClick={(e) => {
           this.props.onItemClick(item);
         }}
-        ref={n => {
-          if (
-            highlighted.indexOf(item.id) > -1
-            && !layouts.find(l => l.id === item.id)
-            && n
-          ) {
-            this.paneNodesToMeasure.push(n);
-          }
-        }}
+        ref={(n) => this.maybeEnqueueUnmeasured(item, n)}
       >
       {item.name}
       </div>
@@ -81,9 +83,7 @@ class Menus extends Component {
             <li
               onMouseEnter={() => this.props.onItemMouseEnter(item)}
               onMouseLeave={() => this.props.onItemMouseLeave(item)}
-              ref={n => {
-                if (!layout && isHighlighted && n) this.paneNodesToMeasure.push(n);
-              }}
+              ref={(n) => this.maybeEnqueueUnmeasured(item, n)}
             >
               <span className='check-slot'>
               {item.checkable && <input type='checkbox' checked={isChecked} />}
